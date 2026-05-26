@@ -1,0 +1,38 @@
+[project]
+name = "phase-a-tumor-scrnaseq"
+version = "0.1.0"
+description = "Phase A teaching notebook: end-to-end scRNA-seq analysis of a single tumor sample (Pelka et al. 2021 CRC, via cellxgene-census)."
+authors = [{ name = "Arun K." }]
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+dependencies = [
+    "scanpy==1.10.3",
+    "anndata==0.10.9",
+    "numpy==1.26.4",
+    "pandas==2.2.3",
+    "scipy==1.13.1",
+    "scikit-learn==1.5.2",
+    "matplotlib==3.9.2",
+    "seaborn==0.13.2",
+    "leidenalg==0.10.2",
+    "igraph==0.11.8",
+    "umap-learn==0.5.7",
+    "h5py==3.12.1",
+    "scikit-image==0.24.0",
+    "scikit-misc==0.3.1",
+    "celltypist==1.6.3",
+    "cellxgene-census==1.16.2",
+    "tiledbsoma==1.15.0",
+    "jupyterlab==4.3.0",
+    "ipywidgets==8.1.5",
+    "tqdm==4.67.0",
+    "pyarrow==17.0.0",
+    "openpyxl==3.1.5",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
