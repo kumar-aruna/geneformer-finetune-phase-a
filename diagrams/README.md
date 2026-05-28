@@ -1,33 +1,24 @@
-# Pipeline Diagrams
+# Pipeline diagrams
 
-Two complementary visualizations of the Phase A scRNA-seq analysis pipeline.
+Two diagrams that visualize the Phase A pipeline at different levels of detail.
 
-| File | What it shows | When to use |
+| File | What it shows | When it's useful |
 |---|---|---|
-| [`01_high_level_flowchart.md`](01_high_level_flowchart.md) | One-page overview — 9 sections, cell counts, checkpoint files | First read; presentations; high-level discussion |
-| [`02_detailed_flowchart.md`](02_detailed_flowchart.md) | Function-level call graph + AnnData state evolution + cross-section dependencies | Interview prep; understanding what each step does to `adata` |
+| [`01_high_level_flowchart.md`](01_high_level_flowchart.md) | One-page overview: 9 sections, cell counts at each stage, checkpoint files | First read, presentations |
+| [`02_detailed_flowchart.md`](02_detailed_flowchart.md) | Function-level call graph, AnnData state evolution, cross-section dependencies | When I want to remember what each step adds to `adata` |
 
-Both use **Mermaid** — they render natively in:
-- GitHub README and markdown files
-- VS Code (with the Mermaid extension)
-- JupyterLab (via `mermaid` cell magic or `IPython.display`)
-- Any modern markdown viewer
+Both are written in Mermaid, which renders natively on GitHub when you click into a `.md` file. It also works in VS Code (with the Mermaid extension) and in JupyterLab.
 
-## To export as PNG
+## Exporting as PNG
 
-If you need static images (e.g., for a slide deck or paper figure):
+If I need static images for a slide deck or a paper figure:
 
 ```bash
-# Install the Mermaid CLI once:
 npm install -g @mermaid-js/mermaid-cli
-
-# Then export both diagrams:
 mmdc -i 01_high_level_flowchart.md -o 01_high_level_flowchart.png --width 2400
 mmdc -i 02_detailed_flowchart.md   -o 02_detailed_flowchart.png   --width 2400
 ```
 
-## To edit
+## Editing
 
-Edit the markdown directly. Each `\`\`\`mermaid` block contains a diagram source. Mermaid syntax is text-based — easy to version-control and review changes through pull requests.
-
-For the Mermaid syntax reference: https://mermaid.js.org/intro/
+Just edit the markdown. Each ` ```mermaid ` block is the diagram source. Mermaid syntax reference: https://mermaid.js.org/intro/

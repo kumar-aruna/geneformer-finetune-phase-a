@@ -1,8 +1,8 @@
-# Phase A — Pipeline Overview
+# Phase A pipeline overview
 
-Single-page overview of the 9-section pipeline, data flow, and checkpoint files.
+Single-page overview of the 9-section pipeline, with cell counts at each stage and the checkpoint files saved between sections.
 
-> Renders automatically on GitHub. For a static PNG, see `01_high_level_flowchart.png` (generated via `mmdc -i 01_high_level_flowchart.md -o 01_high_level_flowchart.png`).
+Renders automatically on GitHub. For a static PNG, see notes at the bottom of the diagrams folder README.
 
 ```mermaid
 flowchart TB
@@ -19,15 +19,15 @@ flowchart TB
 
     %% --- Section 2 ---
     s2["§2 Quality control<br/>━━━━━━━━━━━━<br/>• flag MT and ribo genes<br/>• calculate QC metrics<br/>• tumor-appropriate thresholds<br/>  (pct_mt ≤ 20%, no upper UMI cap)"]:::section
-    cp2[/"💾 02_crc_donor_qc.h5ad<br/>6,096 cells (0 dropped)"/]:::checkpoint
+    cp2[/"💾 02_crc_donor_qc.h5ad<br/>4,905 cells (1,191 dropped, pct_mt > 20%)"/]:::checkpoint
 
     %% --- Section 3 ---
     s3["§3 Doublet detection<br/>━━━━━━━━━━━━<br/>• Scrublet simulates fake doublets<br/>• score per real cell<br/>• auto-threshold at score 0.36<br/>• remove flagged cells"]:::section
-    cp3[/"💾 03_crc_donor_postdoublet.h5ad<br/>6,042 cells (54 removed)"/]:::checkpoint
+    cp3[/"💾 03_crc_donor_postdoublet.h5ad<br/>4,890 cells (15 removed)"/]:::checkpoint
 
     %% --- Section 4 ---
     s4["§4 Normalization + features<br/>━━━━━━━━━━━━<br/>• preserve raw counts to layers<br/>• total-count normalize (CP10K)<br/>• log1p transform<br/>• HVG selection (seurat_v3, 2,000)"]:::section
-    cp4[/"💾 04_crc_donor_normalized.h5ad<br/>6,042 cells • 2,000 HVGs flagged"/]:::checkpoint
+    cp4[/"💾 04_crc_donor_normalized.h5ad<br/>4,890 cells • 2,000 HVGs flagged"/]:::checkpoint
 
     %% --- Section 5 ---
     s5["§5 Dim reduction + clustering<br/>━━━━━━━━━━━━<br/>• PCA on HVGs (50 components)<br/>• elbow plot → 30 PCs<br/>• 15-NN graph in PCA space<br/>• UMAP for 2D embedding<br/>• Leiden at res 0.4 / 0.8 / 1.5<br/>• selected resolution 0.8 → 13 clusters<br/>• drop adata.raw"]:::section
@@ -38,8 +38,8 @@ flowchart TB
     cp6[/"💾 06_crc_donor_annotated.h5ad<br/>9 cell types identified"/]:::checkpoint
 
     %% --- Section 7 ---
-    s7["§7 Tumor identification<br/>━━━━━━━━━━━━<br/>• cell-cycle scoring (Tirosh 2016)<br/>• 43 S-phase + 54 G2M genes<br/>• per-cluster cycling fraction<br/>• 44.4% in S/G2M overall"]:::section
-    cp7[/"💾 07_crc_donor_cycling.h5ad<br/>Cluster 6 most proliferative"/]:::checkpoint
+    s7["§7 Tumor identification<br/>━━━━━━━━━━━━<br/>• cell-cycle scoring (Tirosh 2016)<br/>• 43 S-phase + 54 G2M genes<br/>• per-cluster cycling fraction<br/>• 40.1% in S/G2M overall"]:::section
+    cp7[/"💾 07_crc_donor_cycling.h5ad<br/>Cluster 0 (cycling tumor) most proliferative"/]:::checkpoint
 
     %% --- Section 8 ---
     s8["§8 Immune subtyping<br/>━━━━━━━━━━━━<br/>• score CD8 / CD4 / Treg / exhausted<br/>• score M1 vs M2 macrophages<br/>• per-cluster mean scores"]:::section
@@ -47,7 +47,7 @@ flowchart TB
 
     %% --- Section 9 ---
     s9["§9 Final figures + save<br/>━━━━━━━━━━━━<br/>• annotated UMAP<br/>• cell-type proportion barchart<br/>• marker dot plot (validation)<br/>• write final .h5ad"]:::section
-    final[("✅ 09_crc_donor_final_annotated.h5ad<br/>6,042 cells × 38,361 genes<br/>67 obs columns<br/>295 MB")]:::final
+    final[("✅ 09_crc_donor_final_annotated.h5ad<br/>4,890 cells × 38,361 genes<br/>69 obs columns<br/>270 MB")]:::final
 
     %% --- Phase B/C preview ---
     phaseB["🔬 Phase B — Spatial<br/>(Visium / Xenium)"]:::future
@@ -83,14 +83,14 @@ flowchart TB
 |---|---|
 | Source dataset | 370,115 |
 | After donor + tumor filter | 6,096 |
-| After QC | 6,096 (no cells failed) |
-| After doublet removal | **6,042** (final analytical set) |
+| After QC (pct_mt ≤ 20%) | 4,905 |
+| After doublet removal | **4,890** (final analytical set) |
 
 | Section | Key parameter |
 |---|---|
 | §2 | `pct_counts_mt ≤ 20%` (tumor-relaxed) |
-| §4 | 2,000 HVGs · `target_sum=10_000` · `flavor="seurat_v3"` |
-| §5 | 30 PCs · 15-NN · Leiden resolution 0.8 |
+| §4 | 2,000 HVGs, `target_sum=10_000`, `flavor="seurat_v3"` |
+| §5 | 30 PCs, 15-NN, Leiden resolution 0.8 |
 | §6 | CellTypist `Immune_All_Low` model |
 | §7 | Tirosh 2016 S+G2M signatures |
-| §8 | CD8/CD4/Treg/exhausted + M1/M2 signatures |
+| §8 | CD8 / CD4 / Treg / exhausted + M1 / M2 signatures |

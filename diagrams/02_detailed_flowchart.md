@@ -1,8 +1,6 @@
-# Phase A — Detailed Pipeline Flowchart
+# Phase A detailed pipeline flowchart
 
-Function-level breakdown showing every key call, its parameters, and what each step adds to the AnnData object.
-
-> Useful for understanding the *state* of `adata` at each stage and for interview preparation.
+Function-level breakdown showing every key call, its parameters, and what each step adds to the AnnData object. This is the one I keep open while reviewing the code.
 
 ---
 
